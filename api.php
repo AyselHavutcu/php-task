@@ -56,8 +56,7 @@ function getTaskData(){
 			  //echo $response;
 			}
 			curl_close($curl);
-            $task_data = json_decode($response, true);
-            return $task_data;
+      $task_data = json_decode($response, true);
+      return $task_data;
 
   }
-?>
