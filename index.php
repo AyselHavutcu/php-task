@@ -1,7 +1,3 @@
-<?php
-include("api.php");
-$taskData = getTaskData()
-?>
 <!DOCTYPE html>
 <html>
 
@@ -10,6 +6,7 @@ $taskData = getTaskData()
   <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
   <link rel="stylesheet" href="static/index.css">
 </head>
+
 <body>
   <div class="container py-auto">
     <div class="row justify-content-center">
@@ -29,18 +26,7 @@ $taskData = getTaskData()
             </thead>
             <tbody>
               <!-- PHP CODE TO FETCH DATA FROM ROWS -->
-              <?php
-              foreach ($taskData as $row) {
-              ?>
-                <tr>
-                  <td><?php echo $row['task']; ?></td>
-                  <td><?php echo $row['title']; ?></td>
-                  <td><?php echo $row['description']; ?></td>
-                  <td style="background-color: <?php echo $row['colorCode']; ?>;">
-                </tr>
-              <?php
-              }
-              ?>
+
             </tbody>
           </table>
         </div>
@@ -62,12 +48,12 @@ $taskData = getTaskData()
                   <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
                 </div>
                 <div class="file-upload-content">
-                  <img class="file-upload-image" src="#" alt="your image" width="auto" height="auto"/>
+                  <img class="file-upload-image" src="#" alt="your image" width="auto" height="auto" />
                 </div>
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="success-button"  data-dismiss="modal">Close</button>
+              <button type="button" class="success-button" data-dismiss="modal">Close</button>
             </div>
           </div>
         </div>
@@ -76,27 +62,47 @@ $taskData = getTaskData()
     </div>
   </div>
   </div>
-   <!-- Javascript Libraries-->
+  <!-- Javascript Libraries-->
   <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
   <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
   <script>
-    function displayTaskData() {
-      $(document).ready(function() {
-        var dataTable = $('#taskTable').DataTable();
+    function displayTaskData(taskData) {
+      var dataTable = $('#taskTable').DataTable();
+      dataTable.clear();
+      $.each(taskData, function(index, row) {
+        dataTable.row.add([
+          row['task'],
+          row['title'],
+          row['description'],
+          '<td style="background-color:' + row['colorCode'] + ';"></td>'
+        ]);
+      });
+      dataTable.draw();
+    }
 
+    function updateTaskData() {
+      console.log('helo');
+      $.ajax({
+        type: 'GET',
+        url: 'api.php',
+        dataType: 'json',
+        success: function(result) { //display data on datatable
+          displayTaskData(result);
+        }
       });
     }
+    $(document).ready(function() {
+      // Call updateTaskData() initially
+      updateTaskData();
 
-    function refreshTableData() {
-      displayTaskData();
-      console.log('hey I am here')
-      setTimeout(refreshTableData, 60 * 60 * 1000);
-    }
-
-    refreshTableData();
+      // Call updateTaskData() every 30 seconds
+      setInterval(function() {
+        updateTaskData();
+      }, 60 * 60 * 1000);
+    });
 
     function readURL(input) {
       var reader = new FileReader();
