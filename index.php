@@ -32,7 +32,7 @@
         </div>
       </div>
       <!--Image Modal Section-->
-      <div class="central">
+      <div class="central  mb-3">
         <button class="pure-button success-button" data-toggle="modal" data-target="#imgModal">Open The Modal</button>
       </div>
       <div id="imgModal" class="modal fade" role="dialog">
@@ -77,7 +77,7 @@
           row['task'],
           row['title'],
           row['description'],
-          '<td style="background-color:' + row['colorCode'] + ';"></td>'
+          '<div style="background-color:' + row['colorCode'] + ';height:73px;"></div>'
         ]);
       });
       dataTable.draw();
@@ -98,7 +98,7 @@
       // Call updateTaskData() initially
       updateTaskData();
 
-      // Call updateTaskData() every 30 seconds
+      // Call updateTaskData() every 60 minutes
       setInterval(function() {
         updateTaskData();
       }, 60 * 60 * 1000);

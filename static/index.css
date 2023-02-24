@@ -102,3 +102,11 @@ body {
 .table-bordered {
     border: 1px solid #bcc3cb;
 }
+.table th, .table td {
+  padding: 0rem 0.2em !important;
+  vertical-align: middle;
+}
+.table.dataTable thead>tr>th{
+    padding:0.5em !important;
+}
+
