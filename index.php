@@ -29,8 +29,10 @@
 
             </tbody>
           </table>
+          <div id="loader" class="lds-dual-ring display-none overlay"></div>
         </div>
       </div>
+      
       <!--Image Modal Section-->
       <div class="central  mb-3">
         <button class="pure-button success-button" data-toggle="modal" data-target="#imgModal">Open The Modal</button>
@@ -84,13 +86,16 @@
     }
 
     function updateTaskData() {
-      console.log('helo');
       $.ajax({
         type: 'GET',
         url: 'api.php',
         dataType: 'json',
         success: function(result) { //display data on datatable
+          console.log(result);
           displayTaskData(result);
+        },
+        error: function() {
+          alert('There might be a connection error. Please reach to your administrator!');
         }
       });
     }
@@ -101,9 +106,10 @@
       // Call updateTaskData() every 60 minutes
       setInterval(function() {
         updateTaskData();
-      }, 60 * 60 * 1000);
+      }, 60*60*1000);
     });
 
+    
     function readURL(input) {
       var reader = new FileReader();
 
